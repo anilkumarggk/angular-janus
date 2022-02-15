@@ -152,6 +152,10 @@ export class JanusVideoroomComponent implements OnInit, OnDestroy, OnChanges {
   @Output()
   publishers = new EventEmitter<Publisher[]>();
 
+  /* Emit any changes in the roomInfo */
+  @Output()
+  roomInfo = new EventEmitter<RoomInfo>();
+
   /** @internal */
   roomInfo$: Observable<RoomInfo>;
   /** @internal */
@@ -176,6 +180,10 @@ export class JanusVideoroomComponent implements OnInit, OnDestroy, OnChanges {
     this.roomInfo$ = this.janusStore.roomInfo$.pipe(
       shareReplay(1)
     );
+    
+    this.roomInfo$.subscribe(_roomInfo => {
+      this.roomInfo.emit(_roomInfo)
+    })
 
     // @ts-ignore
     if (window.Cypress) {
